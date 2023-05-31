@@ -1,0 +1,42 @@
+﻿@using App.DAL.Models
+@model IEnumerable<Routine>
+@{
+    bool isAuthenticated = User.Identity?.IsAuthenticated == true;
+}
+
+<section class="space-sm flush-with-above">
+    <div class="container">
+        <ul class="row feature-list feature-list-sm">
+            @foreach (var routine in Model)
+            {
+                <li class="col-12 col-md-6 col-lg-4">
+                    <div class="card">
+                        <a type="button" asp-controller="Club" asp-action="Detail" asp-route-id="@routine.Id">
+                            <img class="card-img-top" src="@routine.Image" alt="Card image cap">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title">@routine.Title</h4>
+                            <p class="card-text">@routine.Description</p>
+                        </div>
+                        <div class="card-footer card-footer-borderless d-flex justify-content-between">
+                            <div>
+                                <small>@routine.RoutineCategory</small>
+                            </div>
+                            @if (isAuthenticated && User.IsInRole("trainer"))
+                            {
+                                <div>
+                                    <a type="button" class="btn btn-sm btn-outline-info" asp-controller="Routine" asp-action="Edit" asp-route-id="@routine.Id">
+                                        Edit
+                                    </a>
+                                    <a type="button" class="btn btn-sm btn-outline-danger" asp-controller="Routine" asp-action="Delete" asp-route-id="@routine.Id">
+                                        Delete
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</section>
